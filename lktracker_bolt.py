@@ -5,14 +5,19 @@ from scipy.interpolate import RectBivariateSpline
 import glob
 
 
+def huber_loss(a, gamma=0.01):
+    return np.sum(np.square(gamma)*(np.sqrt(1+np.square(a/gamma))-1))
+
+
 def LucasKanade(in_temp, in_temp_a, rectangle, s=np.zeros(2)):
 
     x1, y1, x2, y2 = rectangle[0], rectangle[1], rectangle[2], rectangle[3]
     temp_y, temp_x = np.gradient(in_temp_a)
     ds = 1
-    thresh = 0.001
+    thresh = 0.0001
 
-    while np.square(ds).sum() > thresh:
+    #while np.square(ds).sum() > thresh:
+    while huber_loss(ds,1) > thresh:
 
         s_x, s_y = s[0], s[1]
         w_x1, w_y1, w_x2, w_y2 = x1 + s_x, y1 + s_y, x2 + s_x, y2 + s_y
@@ -94,8 +99,8 @@ if __name__=="__main__":
     #out = cv2.VideoWriter('Baby.avi', cv2.VideoWriter_fourcc('M','J','P','G'), 10, (w,h))
 
     for index in range(len(images)-1):
-        if index % 10 ==0:
-            capture_gray_in = cv2.imread(images[index],0)
+        #if index % 15 == 0:
+        #    capture_gray_in = cv2.imread(images[index],0)
         capture = cv2.imread(images[index])
         capture_gray = cv2.cvtColor(capture, cv2.COLOR_BGR2GRAY)
         #capture_gray = cv2.equalizeHist(capture_gray)

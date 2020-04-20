@@ -68,15 +68,15 @@ def LucasKanade(in_temp, in_temp_a, rectangle, s=np.zeros(2)):
 
 
 if __name__=="__main__":
-    path = "./data/Car4/img"
-    #path = "./data/Bolt2/img"
+    #path = "./data/Car4/img"
+    path = "./data/Bolt2/img"
     #path = "./data/DragonBaby/img"
     ext = ".jpg"
     images = glob.glob(path+'/*' + ext)
     images.sort()
     #rectangle = [70, 51, 107, 87]
-    rectangle = [70, 51, 177, 138]
-    #rectangle = [269, 75, 303, 139]
+    #rectangle = [70, 51, 177, 138]
+    rectangle = [269, 75, 303, 139]
     #rectangle = [160, 83, 216, 148]
 
     l = rectangle[2] - rectangle[0]
@@ -87,19 +87,18 @@ if __name__=="__main__":
     capture_gray_in = cv2.cvtColor(capture_in, cv2.COLOR_BGR2GRAY)
     clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
     #capture_gray_in = clahe.apply(capture_gray_in)
-    capture_gray_in = cv2.equalizeHist(capture_gray_in)
+    #capture_gray_in = cv2.equalizeHist(capture_gray_in)
     h,w = capture_gray_in.shape
-    out = cv2.VideoWriter('Car2.avi', cv2.VideoWriter_fourcc('M','J','P','G'), 10, (w,h))
+    #out = cv2.VideoWriter('Car.avi', cv2.VideoWriter_fourcc('M','J','P','G'), 10, (w,h))
+    out = cv2.VideoWriter('Bolt2.avi', cv2.VideoWriter_fourcc('M','J','P','G'), 10, (w,h))
     #out = cv2.VideoWriter('Baby.avi', cv2.VideoWriter_fourcc('M','J','P','G'), 10, (w,h))
 
     for index in range(len(images)-1):
-        if index % 60 == 0 and index < 230:
-        #if index == 187:
+        if index % 10 ==0:
             capture_gray_in = cv2.imread(images[index],0)
-            capture_gray_in = cv2.equalizeHist(capture_gray_in)
         capture = cv2.imread(images[index])
         capture_gray = cv2.cvtColor(capture, cv2.COLOR_BGR2GRAY)
-        capture_gray = cv2.equalizeHist(capture_gray)
+        #capture_gray = cv2.equalizeHist(capture_gray)
         #capture_gray = clahe.apply(capture_gray)
 
         cv2.rectangle(capture,(int(rectangle[0]),int(rectangle[1])),(int(rectangle[0])+l,int(rectangle[1])+b),(255, 0, 0),3)
@@ -108,7 +107,7 @@ if __name__=="__main__":
 
         capture_next = cv2.imread(images[index+1])
         capture_gray_next = cv2.cvtColor(capture_next, cv2.COLOR_BGR2GRAY)
-        capture_gray_next = cv2.equalizeHist(capture_gray_next)
+        #capture_gray_next = cv2.equalizeHist(capture_gray_next)
         #capture_gray_next = clahe.apply(capture_gray_next)
 
         in_temp_x = capture_gray_in / 255.

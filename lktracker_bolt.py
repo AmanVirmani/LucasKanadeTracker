@@ -61,8 +61,10 @@ def LucasKanade(in_temp, in_temp_a, rectangle, s=np.zeros(2)):
         H = hess_matrix.T @ hess_matrix
 
 
-
-        ds = np.linalg.inv(H) @ (hess_matrix.T) @ img_error
+        try:
+            ds = np.linalg.inv(H) @ (hess_matrix.T) @ img_error
+        except:
+            return s
 
 
         s[0] += ds[0, 0]
